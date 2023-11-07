@@ -1,7 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import Cors from 'micro-cors';
-const cors = Cors();
+const cors = Cors({
+  allowMethods: ['POST'], // Allow POST requests
+  allowOrigin: 'https://posten.vercel.app', // Replace with your Vercel site URL
+  maxAge: 300, // Specify the max age for CORS preflight requests
+});
 
 export default cors((req, res) => {
   if (req.method === 'POST') {
