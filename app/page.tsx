@@ -18,9 +18,8 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch('/api/saveLogin', {
         method: 'POST',
