@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { saveUserData } from '../fireBaseFunctions'; // Import the Firebase functions
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,35 +11,22 @@ const Login = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/saveLogin', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.status === 200) {
-        setEmail('');
-        setPassword('');
-        setSuccessMessage('Login information saved successfully');
-        setErrorMessage('');
-      } else if (response.status === 400) {
-        const data = await response.json();
-        setErrorMessage(data.message);
-        setSuccessMessage('');
-      }
+      const message = await saveUserData(email, password); // Save user data to Firebase
+      setEmail('');
+      setPassword('');
+      setSuccessMessage(message);
+      setErrorMessage('');
     } catch (error) {
       console.error(error);
       setErrorMessage('An error occurred');
@@ -66,6 +54,7 @@ const Login = () => {
           <button className="bg-blue-500 text-white p-2 rounded-lg">Log In</button>
         </form>
         {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
+        {errorMessage && <p className="text-red-600 mt-4">{errorMessage}</p>}
         <p className="mt-4">
           Don't have an account? <Link href="/signup">Sign Up</Link>
         </p>
