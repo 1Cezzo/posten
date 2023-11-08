@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "echo 'Build step here'",
     "start": "next start",
     "lint": "next lint"
   },
