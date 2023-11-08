@@ -1,38 +1,38 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { saveUserData } from '../fireBaseFunctions' // Import the Firebase functions
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { saveUserData } from '../fireBaseFunctions'; // Import the Firebase functions
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value)
-  }
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setEmail(e.target.value);
+  };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value)
-  }
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setPassword(e.target.value);
+  };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault()
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
     try {
-      const message = saveUserData(email, password) // Save user data to Firebase
-      setEmail('')
-      setPassword('')
-      setSuccessMessage(await message)
-      setErrorMessage('')
+      const message = await saveUserData(email, password); // Save user data to Firebase
+      setEmail('');
+      setPassword('');
+      setSuccessMessage(message);
+      setErrorMessage('');
     } catch (error) {
-      console.error(error)
-      setErrorMessage('An error occurred')
-      setSuccessMessage('')
+      console.error(error);
+      setErrorMessage('An error occurred');
+      setSuccessMessage('');
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -60,11 +60,11 @@ const Login = () => {
           <p className="text-red-600 mt-4">{errorMessage}</p>
         )}
         <p className="mt-4">
-        Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
+          Don't have an account? <Link href="/signup">Sign Up</Link>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
