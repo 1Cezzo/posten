@@ -3,7 +3,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { saveUserData } from '../fireBaseFunctions'; // Import the Firebase functions
+import { saveUserData } from '../firebaseFunctions'; // Import the Firebase functions
 
 const Login = () => {
   const [email, setEmail] = useState('');
