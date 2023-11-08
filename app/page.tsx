@@ -1,38 +1,38 @@
 'use client'
 
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { saveUserData } from '../fireBaseFunctions'; // Import the Firebase functions
+import React, { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { saveUserData } from '../fireBaseFunctions' // Import the Firebase functions
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-  
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-  
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setEmail(e.target.value)
+  }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setPassword(e.target.value)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
     try {
-      const message = await saveUserData(email, password); // Save user data to Firebase
-      setEmail('');
-      setPassword('');
-      setSuccessMessage(message);
-      setErrorMessage('');
+      const message = saveUserData(email, password) // Save user data to Firebase
+      setEmail('')
+      setPassword('')
+      setSuccessMessage(await message)
+      setErrorMessage('')
     } catch (error) {
-      console.error(error);
-      setErrorMessage('An error occurred');
-      setSuccessMessage('');
+      console.error(error)
+      setErrorMessage('An error occurred')
+      setSuccessMessage('')
     }
-  };
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -53,14 +53,18 @@ const Login = () => {
           <input type="password" id="password" className="p-2 mb-4" value={password} onChange={handlePasswordChange} />
           <button className="bg-blue-500 text-white p-2 rounded-lg">Log In</button>
         </form>
-        {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
-        {errorMessage && <p className="text-red-600 mt-4">{errorMessage}</p>}
+        {successMessage && successMessage.length > 0 && (
+          <p className="text-green-600 mt-4">{successMessage}</p>
+        )}
+        {errorMessage && errorMessage.length > 0 && (
+          <p className="text-red-600 mt-4">{errorMessage}</p>
+        )}
         <p className="mt-4">
-          Don't have an account? <Link href="/signup">Sign Up</Link>
+        Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

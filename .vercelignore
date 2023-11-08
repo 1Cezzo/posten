@@ -2,3 +2,5 @@
 .eslintrc.json
 .eslintignore
 ./pages/api/saveLogin.js
+./app/layout.tsx
+./app/page.tsx
